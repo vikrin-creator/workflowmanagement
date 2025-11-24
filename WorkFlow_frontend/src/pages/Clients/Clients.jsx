@@ -38,11 +38,7 @@ const Clients = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        let url = '';
-        if (subStatusFilter !== 'all') {
-          url = `?sub_status=${subStatusFilter}`;
-        }
-        const response = await clientsAPI.getAll(url)
+        const response = await clientsAPI.getAll()
         if (response.data.success) {
           setClients(response.data.data)
         }
@@ -55,7 +51,7 @@ const Clients = () => {
     }
 
     fetchClients()
-  }, [subStatusFilter])
+  }, [])
 
   const handleClientClick = async (client) => {
     try {
@@ -150,6 +146,13 @@ const Clients = () => {
   filteredClients = filteredClients.filter(client => 
     showConfirmedOnly ? client.is_confirmed : !client.is_confirmed
   )
+
+  // Apply sub-status filter for not confirmed clients
+  if (!showConfirmedOnly && subStatusFilter !== 'all') {
+    filteredClients = filteredClients.filter(client => 
+      client.sub_status === subStatusFilter
+    )
+  }
 
   if (loading) {
     return <Loader fullScreen size="large" />
