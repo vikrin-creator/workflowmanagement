@@ -191,8 +191,8 @@ const Clients = () => {
       </div>
 
       {!showConfirmedOnly && (
-        <div className="sub-status-filter">
-          <label className="sub-status-label">Filter by Status:</label>
+        <div className="sub-status-filter" style={{backgroundColor: '#ff0000', padding: '20px', margin: '20px 0'}}>
+          <label className="sub-status-label" style={{color: '#fff', fontSize: '18px', fontWeight: 'bold'}}>Filter by Status:</label>
           <select 
             className="sub-status-dropdown"
             value={subStatusFilter}
