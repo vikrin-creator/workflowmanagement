@@ -1,0 +1,20 @@
+.card {
+  background: #eeeeee;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(100, 121, 143, 0.08);
+  border: 1px solid #e1e8ed;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hoverable {
+  cursor: pointer;
+}
+
+.card-hoverable:hover {
+  border-color: #d0dae3;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
