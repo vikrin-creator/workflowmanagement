@@ -12,22 +12,11 @@
   gap: 16px;
 }
 
-.sub-status-filter {
+.header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px solid #e1e8ed;
-}
-
-.sub-status-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #5a6c7d;
-  white-space: nowrap;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .sub-status-dropdown {
@@ -41,7 +30,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  min-width: 250px;
+  min-width: 200px;
 }
 
 .sub-status-dropdown:hover {

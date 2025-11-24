@@ -169,42 +169,41 @@ const Clients = () => {
           Clients
         </motion.h1>
         
-        <div className="filter-toggle">
-          <span className={!showConfirmedOnly ? 'active' : ''}>Not Confirmed</span>
-          <label className="toggle-switch">
-            <input
-              type="checkbox"
-              checked={showConfirmedOnly}
-              onChange={(e) => {
-                const isConfirmed = e.target.checked
-                setShowConfirmedOnly(isConfirmed)
-                // Reset sub-status filter when switching
-                setSubStatusFilter('all')
-                // Update URL to reflect the current filter
-                navigate(`/clients?filter=${isConfirmed ? 'confirmed' : 'not-confirmed'}`)
-              }}
-            />
-            <span className="slider"></span>
-          </label>
-          <span className={showConfirmedOnly ? 'active' : ''}>Confirmed</span>
+        <div className="header-right">
+          <div className="filter-toggle">
+            <span className={!showConfirmedOnly ? 'active' : ''}>Not Confirmed</span>
+            <label className="toggle-switch">
+              <input
+                type="checkbox"
+                checked={showConfirmedOnly}
+                onChange={(e) => {
+                  const isConfirmed = e.target.checked
+                  setShowConfirmedOnly(isConfirmed)
+                  // Reset sub-status filter when switching
+                  setSubStatusFilter('all')
+                  // Update URL to reflect the current filter
+                  navigate(`/clients?filter=${isConfirmed ? 'confirmed' : 'not-confirmed'}`)
+                }}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className={showConfirmedOnly ? 'active' : ''}>Confirmed</span>
+          </div>
+
+          {!showConfirmedOnly && (
+            <select 
+              className="sub-status-dropdown"
+              value={subStatusFilter}
+              onChange={(e) => setSubStatusFilter(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="in-progress">In Progress</option>
+              <option value="waiting-for-client-response">Waiting for Client Response</option>
+              <option value="pending-from-our-side">Pending from our side</option>
+            </select>
+          )}
         </div>
       </div>
-
-      {!showConfirmedOnly && (
-        <div className="sub-status-filter" style={{backgroundColor: '#ff0000', padding: '20px', margin: '20px 0'}}>
-          <label className="sub-status-label" style={{color: '#fff', fontSize: '18px', fontWeight: 'bold'}}>Filter by Status:</label>
-          <select 
-            className="sub-status-dropdown"
-            value={subStatusFilter}
-            onChange={(e) => setSubStatusFilter(e.target.value)}
-          >
-            <option value="all">All Not Confirmed Clients</option>
-            <option value="in-progress">In Progress</option>
-            <option value="waiting-for-client-response">Waiting for Client Response</option>
-            <option value="pending-from-our-side">Pending from our side</option>
-          </select>
-        </div>
-      )}
 
       <div className="search-section">
         <input

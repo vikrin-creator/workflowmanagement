@@ -444,6 +444,12 @@ const ProjectDetails = ({ currentUser, isClientView = false }) => {
         id: project.id,
         status: newStatus
       })
+
+      // Update client's sub_status to match project status
+      await clientsAPI.update({
+        id: project.client.id,
+        subStatus: newStatus
+      })
       
       // Create automatic status update
       const statusText = `Status changed from "${oldStatus.split('-').join(' ')}" to "${newStatus.split('-').join(' ')}" by ${currentUser}`
