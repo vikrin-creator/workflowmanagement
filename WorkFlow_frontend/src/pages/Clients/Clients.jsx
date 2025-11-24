@@ -198,7 +198,7 @@ const Clients = () => {
             value={subStatusFilter}
             onChange={(e) => setSubStatusFilter(e.target.value)}
           >
-            <option value="all">All</option>
+            <option value="all">All Not Confirmed Clients</option>
             <option value="in-progress">In Progress</option>
             <option value="waiting-for-client-response">Waiting for Client Response</option>
             <option value="pending-from-our-side">Pending from our side</option>

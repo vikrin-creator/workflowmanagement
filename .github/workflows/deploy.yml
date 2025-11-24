@@ -34,8 +34,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 21
-        protocol: ftp
+
         local-dir: ./WorkFlow_backend/
         server-dir: /public_html/api/
         
@@ -45,7 +44,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 21
-        protocol: ftp
+  
         local-dir: ./WorkFlow_frontend/dist/
         server-dir: /public_html/
