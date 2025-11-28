@@ -16,8 +16,10 @@ const Clients = () => {
   const [clients, setClients] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [showConfirmedOnly, setShowConfirmedOnly] = useState(true)
+  const [showLostOnly, setShowLostOnly] = useState(false)
   const [subStatusFilter, setSubStatusFilter] = useState('all')
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [showLostModal, setShowLostModal] = useState(false)
   const [selectedClientId, setSelectedClientId] = useState(null)
   const [confirmationDetails, setConfirmationDetails] = useState({
     startDate: '',
@@ -30,17 +32,34 @@ const Clients = () => {
     const filterParam = searchParams.get('filter')
     if (filterParam === 'confirmed') {
       setShowConfirmedOnly(true)
+      setShowLostOnly(false)
     } else if (filterParam === 'not-confirmed') {
       setShowConfirmedOnly(false)
+      setShowLostOnly(false)
+    } else if (filterParam === 'lost') {
+      setShowConfirmedOnly(false)
+      setShowLostOnly(true)
     }
   }, [searchParams])
 
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await clientsAPI.getAll()
-        if (response.data.success) {
-          setClients(response.data.data)
+        const filterParam = searchParams.get('filter')
+        let apiResponse
+        
+        if (filterParam === 'lost') {
+          apiResponse = await clientsAPI.getByFilter('lost')
+        } else if (filterParam === 'confirmed') {
+          apiResponse = await clientsAPI.getByFilter('confirmed')
+        } else if (filterParam === 'not-confirmed') {
+          apiResponse = await clientsAPI.getByFilter('not-confirmed')
+        } else {
+          apiResponse = await clientsAPI.getAll()
+        }
+        
+        if (apiResponse.data.success) {
+          setClients(apiResponse.data.data)
         }
       } catch (error) {
         console.error('Error fetching clients:', error)
@@ -51,7 +70,7 @@ const Clients = () => {
     }
 
     fetchClients()
-  }, [])
+  }, [searchParams])
 
   const handleClientClick = async (client) => {
     try {
@@ -136,16 +155,46 @@ const Clients = () => {
     setSelectedClientId(null)
   }
 
+  const handleMarkAsLost = (e, clientId) => {
+    e.stopPropagation()
+    setSelectedClientId(clientId)
+    setShowLostModal(true)
+  }
+
+  const confirmMarkAsLost = async () => {
+    try {
+      const client = clients.find(c => c.id === selectedClientId)
+      const updatedClient = {
+        ...client,
+        isLost: true
+      }
+      
+      await clientsAPI.update(updatedClient)
+      
+      // Update local state
+      setClients(prevClients =>
+        prevClients.map(c =>
+          c.id === selectedClientId
+            ? { ...c, is_lost: true }
+            : c
+        )
+      )
+      
+      setShowLostModal(false)
+      setSelectedClientId(null)
+    } catch (error) {
+      console.error('Error marking client as lost:', error)
+      alert('Failed to mark client as lost. Please try again.')
+    }
+  }
+
   let filteredClients = clients.filter(client => 
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.email.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  // Apply confirmation filter based on toggle
-  filteredClients = filteredClients.filter(client => 
-    showConfirmedOnly ? client.is_confirmed : !client.is_confirmed
-  )
+  // No additional filtering needed since API already filters based on URL parameter
 
   // Apply sub-status filter for not confirmed clients
   if (!showConfirmedOnly && subStatusFilter !== 'all') {
@@ -166,31 +215,33 @@ const Clients = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Clients
+          {showLostOnly ? 'Lost Clients' : 'Clients'}
         </motion.h1>
         
         <div className="header-right">
-          <div className="filter-toggle">
-            <span className={!showConfirmedOnly ? 'active' : ''}>Not Confirmed</span>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={showConfirmedOnly}
-                onChange={(e) => {
-                  const isConfirmed = e.target.checked
-                  setShowConfirmedOnly(isConfirmed)
-                  // Reset sub-status filter when switching
-                  setSubStatusFilter('all')
-                  // Update URL to reflect the current filter
-                  navigate(`/clients?filter=${isConfirmed ? 'confirmed' : 'not-confirmed'}`)
-                }}
-              />
-              <span className="slider"></span>
-            </label>
-            <span className={showConfirmedOnly ? 'active' : ''}>Confirmed</span>
-          </div>
+          {!showLostOnly && (
+            <div className="filter-toggle">
+              <span className={!showConfirmedOnly ? 'active' : ''}>Not Confirmed</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={showConfirmedOnly}
+                  onChange={(e) => {
+                    const isConfirmed = e.target.checked
+                    setShowConfirmedOnly(isConfirmed)
+                    // Reset sub-status filter when switching
+                    setSubStatusFilter('all')
+                    // Update URL to reflect the current filter
+                    navigate(`/clients?filter=${isConfirmed ? 'confirmed' : 'not-confirmed'}`)
+                  }}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className={showConfirmedOnly ? 'active' : ''}>Confirmed</span>
+            </div>
+          )}
 
-          {!showConfirmedOnly && (
+          {!showConfirmedOnly && !showLostOnly && (
             <select 
               className="sub-status-dropdown"
               value={subStatusFilter}
@@ -267,6 +318,24 @@ const Clients = () => {
                   <span className="stat-label">Total</span>
                 </div>
               </div>
+
+              {!showLostOnly && (
+                <div className="client-actions">
+                  <Button 
+                    variant="outline" 
+                    size="small"
+                    onClick={(e) => handleMarkAsLost(e, client.id)}
+                    style={{ 
+                      borderColor: '#ef5350', 
+                      color: '#ef5350',
+                      fontSize: '13px',
+                      padding: '6px 12px'
+                    }}
+                  >
+                    Mark as Lost
+                  </Button>
+                </div>
+              )}
             </Card>
           </motion.div>
         ))}
@@ -324,6 +393,42 @@ const Clients = () => {
             </Button>
             <Button onClick={handleConfirmClient}>
               Confirm Client
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={showLostModal} 
+        onClose={() => {
+          setShowLostModal(false)
+          setSelectedClientId(null)
+        }}
+        title="Mark Client as Lost"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <p style={{ margin: '0', color: '#5a6c7d', fontSize: '15px', lineHeight: '1.5' }}>
+            Are you sure you want to mark this client as lost? This will move them to the Lost Clients section.
+          </p>
+
+          <div style={{ display: 'flex', gap: '12px', marginTop: '8px', justifyContent: 'flex-end' }}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setShowLostModal(false)
+                setSelectedClientId(null)
+              }}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={confirmMarkAsLost}
+              style={{ 
+                background: 'linear-gradient(135deg, #ef5350 0%, #e53935 100%)',
+                color: 'white'
+              }}
+            >
+              Mark as Lost
             </Button>
           </div>
         </div>

@@ -11,7 +11,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const [clientStats, setClientStats] = useState({
     confirmed: 0,
-    notConfirmed: 0
+    notConfirmed: 0,
+    lost: 0
   })
 
   useEffect(() => {
@@ -22,13 +23,14 @@ const Dashboard = () => {
         if (response.data.success) {
           setClientStats({
             confirmed: response.data.data.clients.confirmed,
-            notConfirmed: response.data.data.clients.notConfirmed
+            notConfirmed: response.data.data.clients.notConfirmed,
+            lost: response.data.data.clients.lost || 0
           })
         }
       } catch (error) {
         console.error('Error fetching dashboard stats:', error)
         // Fallback to default values
-        setClientStats({ confirmed: 0, notConfirmed: 0 })
+        setClientStats({ confirmed: 0, notConfirmed: 0, lost: 0 })
       } finally {
         setLoading(false)
       }
@@ -89,6 +91,17 @@ const Dashboard = () => {
       bgColor: '#fff3e0',
       iconColor: '#ffa726',
       textColor: '#ff9800'
+    },
+    {
+      id: 3,
+      name: 'Lost Clients',
+      type: 'lost',
+      icon: 'LC',
+      count: clientStats.lost,
+      description: 'Clients who are no longer active',
+      bgColor: '#ffebee',
+      iconColor: '#ef5350',
+      textColor: '#f44336'
     }
   ]
 
@@ -101,16 +114,8 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Client Overview
+          Client Management
         </motion.h1>
-        <motion.p 
-          className="dashboard-subtitle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Manage confirmed and pending clients
-        </motion.p>
       </div>
 
       <motion.div 

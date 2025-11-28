@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: clamp(12px, 3vw, 20px);
 }
 
 .login-container {
@@ -12,26 +12,26 @@
 }
 
 .login-card {
-  padding: 48px 40px;
+  padding: clamp(24px, 6vw, 48px) clamp(20px, 5vw, 40px);
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: clamp(24px, 5vw, 40px);
 }
 
 .login-title {
-  font-size: 32px;
+  font-size: clamp(24px, 5vw, 32px);
   font-weight: 600;
   background: linear-gradient(135deg, #42a5f5 0%, #ab47bc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 12px 0;
+  margin: 0 0 clamp(8px, 1.5vw, 12px) 0;
 }
 
 .login-subtitle {
-  font-size: 16px;
+  font-size: clamp(14px, 2.5vw, 16px);
   color: #8898aa;
   margin: 0;
 }
@@ -39,46 +39,84 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(6px, 1vw, 8px);
 }
 
 .error-message {
   background: #ffebee;
   color: #ef5350;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 14px;
-  margin-bottom: 8px;
+  padding: clamp(10px, 2vw, 12px) clamp(14px, 2.5vw, 16px);
+  border-radius: clamp(8px, 1.5vw, 10px);
+  font-size: clamp(13px, 2vw, 14px);
+  margin-bottom: clamp(6px, 1vw, 8px);
   text-align: center;
 }
 
 .login-info {
-  margin-top: 32px;
-  padding-top: 24px;
+  margin-top: clamp(20px, 4vw, 32px);
+  padding-top: clamp(16px, 3vw, 24px);
   border-top: 1px solid #e1e8ed;
   text-align: center;
 }
 
 .info-text {
-  font-size: 13px;
+  font-size: clamp(12px, 1.8vw, 13px);
   color: #8898aa;
-  margin: 0 0 8px 0;
+  margin: 0 0 clamp(6px, 1vw, 8px) 0;
   font-weight: 500;
 }
 
 .info-members {
-  font-size: 14px;
+  font-size: clamp(13px, 2vw, 14px);
   color: #5a6c7d;
   font-weight: 600;
   margin: 0;
 }
 
 @media (max-width: 768px) {
+  .login-page {
+    padding: 16px;
+  }
+
   .login-card {
-    padding: 32px 24px;
+    padding: 28px 20px;
   }
 
   .login-title {
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .login-subtitle {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 10vh;
+  }
+
+  .login-card {
+    padding: 24px 16px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .login-header {
+    margin-bottom: 20px;
+  }
+
+  .login-info {
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .error-message {
+    padding: 10px 14px;
+    font-size: 13px;
   }
 }

@@ -1,10 +1,12 @@
 .card {
   background: #eeeeee;
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: clamp(12px, 2vw, 16px);
+  padding: clamp(16px, 3vw, 24px);
   box-shadow: 0 4px 12px rgba(100, 121, 143, 0.08);
   border: 1px solid #e1e8ed;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .card-hoverable {
@@ -13,8 +15,22 @@
 
 .card-hoverable:hover {
   border-color: #d0dae3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(100, 121, 143, 0.12);
 }
 
 .card:active {
   transform: scale(0.98);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .card {
+    padding: clamp(12px, 4vw, 20px);
+    border-radius: 12px;
+  }
+
+  .card-hoverable:hover {
+    transform: translateY(-1px); /* Reduced hover effect on mobile */
+  }
 }

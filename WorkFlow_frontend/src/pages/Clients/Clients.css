@@ -1,36 +1,37 @@
 .clients-page {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .clients-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: clamp(16px, 3vw, 24px);
   flex-wrap: wrap;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 16px);
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: clamp(10px, 2vw, 16px);
   flex-wrap: wrap;
 }
 
 .sub-status-dropdown {
-  padding: 10px 16px;
+  padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
   border: 2px solid #e1e8ed;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: clamp(6px, 1vw, 8px);
+  font-size: clamp(13px, 2vw, 14px);
   font-family: inherit;
   color: #5a6c7d;
   background: white;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  min-width: 200px;
+  min-width: clamp(150px, 25vw, 200px);
+  min-height: 44px;
 }
 
 .sub-status-dropdown:hover {
@@ -43,20 +44,22 @@
 }
 
 .search-section {
-  margin-bottom: 32px;
+  margin-bottom: clamp(20px, 4vw, 32px);
 }
 
 .search-input {
   width: 100%;
-  padding: 14px 20px;
+  padding: clamp(10px, 2vw, 14px) clamp(16px, 3vw, 20px);
   border: 2px solid #e1e8ed;
-  border-radius: 12px;
-  font-size: 15px;
+  border-radius: clamp(8px, 1.5vw, 12px);
+  font-size: clamp(14px, 2vw, 15px);
   font-family: inherit;
   color: #5a6c7d;
   background: #f8f9fa;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 
 .search-input:focus {
@@ -135,8 +138,8 @@
 
 .clients-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: clamp(14px, 2.5vw, 20px);
 }
 
 .client-card {
@@ -144,8 +147,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 16px;
-  padding: 32px 24px;
+  gap: clamp(8px, 1.5vw, 12px);
+  padding: clamp(16px, 3vw, 20px) clamp(12px, 2.5vw, 16px);
 }
 
 .client-header-section {
@@ -179,15 +182,15 @@
 }
 
 .client-avatar {
-  width: 80px;
-  height: 80px;
+  width: clamp(50px, 8vw, 60px);
+  height: clamp(50px, 8vw, 60px);
   border-radius: 50%;
   background: linear-gradient(135deg, #90caf9 0%, #ce93d8 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: clamp(20px, 3vw, 24px);
   font-weight: 600;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   align-self: center;
@@ -198,14 +201,14 @@
 }
 
 .client-name {
-  font-size: 20px;
+  font-size: clamp(16px, 2.5vw, 18px);
   font-weight: 600;
   color: #5a6c7d;
   margin: 0;
 }
 
 .client-company {
-  font-size: 14px;
+  font-size: clamp(12px, 1.8vw, 13px);
   color: #8898aa;
   margin: 0;
 }
@@ -213,21 +216,21 @@
 .client-contact {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: clamp(12px, 1.8vw, 13px);
   color: #5a6c7d;
   justify-content: center;
 }
 
 .contact-icon {
-  font-size: 16px;
+  font-size: clamp(14px, 2vw, 16px);
 }
 
 .contact-text {
@@ -236,9 +239,9 @@
 
 .client-stats {
   display: flex;
-  gap: 16px;
-  margin-top: 16px;
-  padding-top: 16px;
+  gap: clamp(8px, 1.5vw, 12px);
+  margin-top: clamp(8px, 1.5vw, 12px);
+  padding-top: clamp(8px, 1.5vw, 12px);
   border-top: 1px solid #e1e8ed;
   width: 100%;
   justify-content: center;
@@ -247,11 +250,11 @@
 .stat-box {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .stat-box .stat-value {
-  font-size: 24px;
+  font-size: clamp(18px, 3vw, 20px);
   font-weight: 600;
   background: linear-gradient(135deg, #42a5f5 0%, #ab47bc 100%);
   -webkit-background-clip: text;
@@ -260,14 +263,66 @@
 }
 
 .stat-box .stat-label {
-  font-size: 12px;
+  font-size: clamp(11px, 1.5vw, 12px);
   color: #8898aa;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+.client-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e1e8ed;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   .clients-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .clients-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-right {
+    justify-content: space-between;
+  }
+
+  .sub-status-dropdown {
+    min-width: 140px;
+    flex: 1;
+  }
+
+  .search-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .clients-grid {
+    gap: 12px;
+  }
+
+  .client-card {
+    padding: 14px 12px;
+  }
+
+  .client-stats {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .header-right {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sub-status-dropdown {
+    width: 100%;
   }
 }

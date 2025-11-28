@@ -29,19 +29,45 @@ const Login = ({ onLogin }) => {
     setLoading(true)
     setError('')
     
+    // Basic validation
+    if (!formData.username.trim() || !formData.password.trim()) {
+      setError('Please enter both username and password')
+      setLoading(false)
+      return
+    }
+    
     try {
       const response = await authAPI.login(formData.username, formData.password)
       
-      if (response.data.success) {
-        localStorage.setItem('currentUser', formData.username)
+      if (response.data && response.data.success) {
+        // Store user data with error handling for localStorage
+        try {
+          localStorage.setItem('currentUser', formData.username)
+        } catch (storageError) {
+          console.warn('localStorage not available, using sessionStorage')
+          sessionStorage.setItem('currentUser', formData.username)
+        }
+        
         onLogin(formData.username)
         navigate('/')
       } else {
-        setError('Invalid username or password')
+        setError(response.data?.message || 'Invalid username or password')
       }
     } catch (error) {
       console.error('Login error:', error)
-      setError('Login failed. Please try again.')
+      
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with error status
+        const message = error.response.data?.message || 'Login failed'
+        setError(message)
+      } else if (error.request) {
+        // Request made but no response received
+        setError('Unable to connect to server. Please check your connection.')
+      } else {
+        // Something else happened
+        setError('Login failed. Please try again.')
+      }
     } finally {
       setLoading(false)
     }

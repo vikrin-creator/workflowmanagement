@@ -18,10 +18,11 @@ try {
     // Get dashboard statistics
     $stats = [];
 
-    // Get confirmed and not confirmed client counts
+    // Get confirmed, not confirmed, and lost client counts
     $query = "SELECT 
-              COUNT(CASE WHEN is_confirmed = 1 THEN 1 END) as confirmed,
-              COUNT(CASE WHEN is_confirmed = 0 THEN 1 END) as not_confirmed
+              COUNT(CASE WHEN is_confirmed = 1 AND is_lost = 0 THEN 1 END) as confirmed,
+              COUNT(CASE WHEN is_confirmed = 0 AND is_lost = 0 THEN 1 END) as not_confirmed,
+              COUNT(CASE WHEN is_lost = 1 THEN 1 END) as lost
               FROM clients";
     $stmt = $db->prepare($query);
     $stmt->execute();
@@ -29,7 +30,8 @@ try {
 
     $stats['clients'] = [
         'confirmed' => (int)$clientStats['confirmed'],
-        'notConfirmed' => (int)$clientStats['not_confirmed']
+        'notConfirmed' => (int)$clientStats['not_confirmed'],
+        'lost' => (int)$clientStats['lost']
     ];
 
     // Get project status counts

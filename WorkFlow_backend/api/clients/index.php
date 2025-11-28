@@ -36,8 +36,14 @@ switch ($method) {
         
         if ($filter === 'confirmed') {
             $conditions[] = "is_confirmed = 1";
+            $conditions[] = "is_lost = 0";
         } elseif ($filter === 'not-confirmed') {
             $conditions[] = "is_confirmed = 0";
+            $conditions[] = "is_lost = 0";
+        } elseif ($filter === 'lost') {
+            $conditions[] = "is_lost = 1";
+        } else {
+            $conditions[] = "is_lost = 0";
         }
         
         if (!empty($subStatus) && in_array($subStatus, ['in-progress', 'waiting-for-client-response', 'pending-from-our-side'])) {
@@ -64,8 +70,8 @@ switch ($method) {
         $data = json_decode(file_get_contents("php://input"));
         
         if (!empty($data->name)) {
-            $query = "INSERT INTO clients (name, email, phone, company, address, is_confirmed, sub_status, start_date, end_date, budget) 
-                      VALUES (:name, :email, :phone, :company, :address, :is_confirmed, :sub_status, :start_date, :end_date, :budget)";
+            $query = "INSERT INTO clients (name, email, phone, company, address, is_confirmed, is_lost, sub_status, start_date, end_date, budget) 
+                      VALUES (:name, :email, :phone, :company, :address, :is_confirmed, :is_lost, :sub_status, :start_date, :end_date, :budget)";
             
             $stmt = $db->prepare($query);
             
@@ -76,12 +82,14 @@ switch ($method) {
             $stmt->bindParam(':address', $data->address);
             
             $isConfirmed = isset($data->is_confirmed) ? $data->is_confirmed : false;
+            $isLost = isset($data->is_lost) ? $data->is_lost : false;
             $subStatus = isset($data->sub_status) ? $data->sub_status : 'in-progress';
             $startDate = isset($data->start_date) ? $data->start_date : null;
             $endDate = isset($data->end_date) ? $data->end_date : null;
             $budget = isset($data->budget) ? $data->budget : null;
             
             $stmt->bindParam(':is_confirmed', $isConfirmed, PDO::PARAM_BOOL);
+            $stmt->bindParam(':is_lost', $isLost, PDO::PARAM_BOOL);
             $stmt->bindParam(':sub_status', $subStatus);
             $stmt->bindParam(':start_date', $startDate);
             $stmt->bindParam(':end_date', $endDate);
@@ -138,6 +146,10 @@ switch ($method) {
                 if (isset($data->isConfirmed)) {
                     $updates[] = "is_confirmed = :is_confirmed";
                     $params[':is_confirmed'] = $data->isConfirmed ? 1 : 0;
+                }
+                if (isset($data->isLost)) {
+                    $updates[] = "is_lost = :is_lost";
+                    $params[':is_lost'] = $data->isLost ? 1 : 0;
                 }
                 if (isset($data->startDate)) {
                     $updates[] = "start_date = :start_date";

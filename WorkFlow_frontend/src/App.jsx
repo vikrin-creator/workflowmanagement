@@ -14,8 +14,19 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
-    // Check if user is already logged in
-    const user = localStorage.getItem('currentUser')
+    // Check if user is already logged in with fallback to sessionStorage
+    let user = null
+    try {
+      user = localStorage.getItem('currentUser')
+    } catch (e) {
+      // Fallback to sessionStorage if localStorage is not available
+      try {
+        user = sessionStorage.getItem('currentUser')
+      } catch (e2) {
+        console.warn('Both localStorage and sessionStorage are not available')
+      }
+    }
+    
     if (user) {
       setCurrentUser(user)
     }
@@ -26,7 +37,19 @@ function App() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser')
+    // Clear user data from both storages
+    try {
+      localStorage.removeItem('currentUser')
+    } catch (e) {
+      console.warn('localStorage not available during logout')
+    }
+    
+    try {
+      sessionStorage.removeItem('currentUser')
+    } catch (e) {
+      console.warn('sessionStorage not available during logout')
+    }
+    
     setCurrentUser(null)
   }
 

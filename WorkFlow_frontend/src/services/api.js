@@ -6,10 +6,24 @@ export const API_BASE_URL = isDevelopment ? 'http://localhost/WorkFlow_backend/a
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 10000, // 10 second timeout
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  withCredentials: false
 })
+
+// Add response interceptor for better error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout')
+    }
+    return Promise.reject(error)
+  }
+)
 
 // Auth API
 export const authAPI = {
@@ -22,6 +36,9 @@ export const clientsAPI = {
   getAll: (filter = '') => {
     const url = filter ? `/clients/index.php?filter=${filter}` : '/clients/index.php'
     return api.get(url)
+  },
+  getByFilter: (filter) => {
+    return api.get(`/clients/index.php?filter=${filter}`)
   },
   create: (clientData) => 
     api.post('/clients/index.php', clientData),

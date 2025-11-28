@@ -4,8 +4,8 @@
 }
 
 .add-project-card {
-  padding: 40px;
-  margin-top: 24px;
+  padding: clamp(20px, 5vw, 40px);
+  margin-top: clamp(16px, 3vw, 24px);
 }
 
 .project-form {
@@ -15,19 +15,19 @@
 }
 
 .form-section {
-  margin-bottom: 32px;
-  padding: 24px;
+  margin-bottom: clamp(20px, 4vw, 32px);
+  padding: clamp(16px, 3vw, 24px);
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: clamp(6px, 1vw, 8px);
   border: 1px solid #e0e0e0;
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: clamp(16px, 2.5vw, 18px);
   font-weight: 600;
   color: #333;
-  margin: 0 0 20px 0;
-  padding-bottom: 12px;
+  margin: 0 0 clamp(16px, 2.5vw, 20px) 0;
+  padding-bottom: clamp(8px, 1.5vw, 12px);
   border-bottom: 2px solid #90caf9;
 }
 

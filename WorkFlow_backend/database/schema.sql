@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS clients (
     company VARCHAR(100),
     address TEXT,
     is_confirmed BOOLEAN DEFAULT FALSE,
+    is_lost BOOLEAN DEFAULT FALSE,
     sub_status ENUM('in-progress', 'waiting-for-client-response', 'pending-from-our-side') DEFAULT 'in-progress',
     start_date DATE,
     end_date DATE,

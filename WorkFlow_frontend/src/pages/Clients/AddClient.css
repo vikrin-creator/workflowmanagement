@@ -4,23 +4,23 @@
 }
 
 .add-client-card {
-  padding: 40px;
-  margin-top: 24px;
+  padding: clamp(20px, 5vw, 40px);
+  margin-top: clamp(16px, 3vw, 24px);
 }
 
 .form-title {
-  font-size: 28px;
+  font-size: clamp(22px, 4vw, 28px);
   font-weight: 600;
   color: #5a6c7d;
-  margin: 0 0 8px 0;
+  margin: 0 0 clamp(6px, 1vw, 8px) 0;
   text-align: center;
 }
 
 .form-subtitle {
-  font-size: 16px;
+  font-size: clamp(14px, 2.5vw, 16px);
   color: #8898aa;
   text-align: center;
-  margin: 0 0 32px 0;
+  margin: 0 0 clamp(20px, 4vw, 32px) 0;
 }
 
 .client-form {
@@ -30,27 +30,27 @@
 }
 
 .checkbox-wrapper {
-  margin: 16px 0;
-  padding: 16px;
+  margin: clamp(12px, 2vw, 16px) 0;
+  padding: clamp(12px, 2.5vw, 16px);
   background: #f8f9fa;
-  border-radius: 12px;
+  border-radius: clamp(8px, 1.5vw, 12px);
   border: 2px solid #e1e8ed;
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   cursor: pointer;
   user-select: none;
-  font-size: 15px;
+  font-size: clamp(14px, 2vw, 15px);
   font-weight: 500;
   color: #5a6c7d;
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: clamp(18px, 3vw, 20px);
+  height: clamp(18px, 3vw, 20px);
   cursor: pointer;
   accent-color: #66bb6a;
 }
@@ -61,17 +61,51 @@
 
 .form-actions {
   display: flex;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   justify-content: flex-end;
-  margin-top: 24px;
+  margin-top: clamp(16px, 3vw, 24px);
 }
 
 @media (max-width: 768px) {
   .add-client-card {
-    padding: 24px;
+    padding: 20px;
   }
 
   .form-title {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions .button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-client-card {
+    padding: 16px;
+    margin-top: 12px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .form-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .checkbox-wrapper {
+    margin: 10px 0;
+    padding: 12px;
   }
 }

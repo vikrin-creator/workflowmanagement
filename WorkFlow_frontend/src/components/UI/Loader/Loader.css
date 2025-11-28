@@ -21,7 +21,7 @@
 .loader-spinner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: clamp(6px, 1vw, 8px);
 }
 
 .loader-dot {
@@ -55,4 +55,28 @@
 .loader-large .loader-dot {
   width: 16px;
   height: 16px;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .loader-small .loader-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .loader-medium .loader-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .loader-large .loader-dot {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader-spinner {
+    gap: 4px;
+  }
 }
